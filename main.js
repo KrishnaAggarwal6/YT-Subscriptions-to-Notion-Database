@@ -152,7 +152,10 @@ async function createNotionPage(subscription) {
           url: subscription.cover,
         },
       },
-      icon: "📽️",
+      "icon": {
+        "type": "emoji",
+        "emoji": "📽️"
+    },
       properties: {
         Channel_Name: {
           title: [
