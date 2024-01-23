@@ -64,7 +64,6 @@ async function subscriptionExistsInNotion(title) {
     return false; // Error occurred, assume subscription doesn't exist
   }
 }
-
 async function getAllSubscriptions() {
   await getAllPages();
 
@@ -94,15 +93,16 @@ async function getAllSubscriptions() {
 
         if (AlreadySubscription.includes(channel_title)) {
           console.log(`Already subscribed to: ${channel_title} ${i}  `)
-          i++ ;
+          i++;
           continue;
         }
 
         // Check if the subscription exists in Notion
         const existsInNotion = await subscriptionExistsInNotion(channel_title);
-
         if (existsInNotion) {
           console.log(`Already subscribed to: ${channel_title} in Notion`);
+          i++;
+          console.log(i)
           continue;
         }
 
@@ -119,14 +119,15 @@ async function getAllSubscriptions() {
         if (!AlreadySubscription.includes(channel_title) && !existsInNotion) {
           NewSubscriptions.push(subscriptionData);
           console.log("Adding New Subscription");
-          
           await createNotionPage(subscriptionData);
         }
       }
 
-      // If there are more pages, update nextPageToken
-      if (data.nextPageToken) {
-        nextPageToken = data.nextPageToken;
+      // Update nextPageToken for the next iteration
+      nextPageToken = data.nextPageToken;
+
+      // If there are more pages, log and update nextPageToken
+      if (nextPageToken) {
         console.log("Moving on to the next page");
         // Sleep for 1 second to avoid hitting API limits too quickly
         await sleep(1000);
@@ -138,6 +139,7 @@ async function getAllSubscriptions() {
     console.error("Error fetching subscriptions:", error);
   }
 }
+
 
 async function createNotionPage(subscription) {
   console.log("Sending Data to Notion");
