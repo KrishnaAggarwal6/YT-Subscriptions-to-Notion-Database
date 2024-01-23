@@ -86,3 +86,7 @@ NOTION_DB_ID=your-notion-database-id
 
 #### Feel free to contribute to this project by opening issues or submitting pull requests. Your input is highly appreciated!
 
+## License
+
+This project is licensed under the [MIT License](https://github.com/KrishnaAggarwal6/YT-Subscriptions-to-Notion-Database?tab=MIT-1-ov-file#).
+
