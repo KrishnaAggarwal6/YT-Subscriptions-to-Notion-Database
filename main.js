@@ -50,7 +50,7 @@ async function subscriptionExistsInNotion(title) {
       filter: {
         property: 'Channel_Name',
         title: {
-          contains: title,
+          equals: title,
         },
       },
     });
@@ -76,6 +76,7 @@ async function getAllSubscriptions() {
   try {
     do {
       let url = `${GapiUrl}?part=${part}&channelId=${channelId}&maxResults=${maxResults}&key=${GapiKey}`;
+      console.log(url)
 
       if (nextPageToken) {
         url += `&pageToken=${nextPageToken}`;
@@ -108,11 +109,13 @@ async function getAllSubscriptions() {
 
         let channel_description = item.snippet.description;
         let channel_cover = item.snippet.thumbnails.high.url;
+        let channel_url = `https://www.youtube.com/channel/${item.snippet.resourceId.channelId}`
 
         const subscriptionData = {
           title: channel_title,
           description: channel_description,
           cover: channel_cover,
+          Curl: channel_url,
         };
 
         // Only push the data if it's not already in AlreadySubscription and doesn't exist in Notion
@@ -168,6 +171,10 @@ async function createNotionPage(subscription) {
             },
           ],
         },
+        Channel_Link: {
+          type: "url",
+          url: subscription.Curl
+        }
       },
       children: [
         {
